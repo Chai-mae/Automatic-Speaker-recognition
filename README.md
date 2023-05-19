@@ -152,13 +152,63 @@ Then we split the test mfcc files into 3s, 10s, 15s and 30s files that we create
     return test_segments
  ```
 ### Step 5: Identification
-In this step, first we define the predict_speaker function which takes as input the mfcc as well as the GMM model to calculate the score of each in order to return the maximum score as well as the predict_speaker above the function:
+In this step, first we define the predict_speaker function which takes as input the mfcc as well as the GMM model to calculate the score of each in order to return the maximum score as well as the predict_speaker below the function:
+ ```javascript
+def predict_speaker(mfcc_features, gmm_models):
+    highest_score = -float('inf')
+    predicted_speaker = None
+
+    # Calculate scores for each GMM model
+    for model_name, gmm_model in gmm_models.items():
+        score = gmm_model.score(mfcc_features)
+
+        if score > highest_score:
+            highest_score = score
+            predicted_speaker = model_name.split(".")[0]
+
+    return highest_score, predicted_speaker
+ ```
 Next, we load all the GMM models for men and women and store them in dictionaries based on n_components and gender:key: model_name , value: gmm model
 and also files containing mfcc features for male and female and store them in dictionaries according to duration and gender:key: model_name , value: mfcc_features
 We go to the speaker identification stage, this part of code, we apply the predict_speaker function for each segment, and store the results in a list of dictionaries. Each dictionary contains information such as the name of the test speaker, the number of segments, the maximum score obtained and the predicted speaker.
+ ```javascript
+results_3_H_128 = []
+
+for test_segment_name, test_segment in test_files_3_H.items():
+    mydict = {}
+    mydict["maxScore"], mydict["IdentifiedSpeaker"] = predict_speaker(test_segment, gmm_models_H_128)
+    mydict["TestSpeaker"] = test_segment_name.split(".")[0]  # Add the test speaker name to the dictionary
+    mydict["NumSegments"] = test_segment_name.split(".")[2]  # Add the number of segments to the dictionary
+    results_3_H_128.append(mydict)
+
+for result in results_3_H_128:
+    print("Test Speaker:", result["TestSpeaker"])
+    print("Num Segments:", result["NumSegments"])
+    print("MAX_Score:", result["maxScore"], "--- Predicted Speaker:", result["IdentifiedSpeaker"])
+    print()
+
+
+ ```
 We apply this block of code for each segment of each duration of 3s, 10s, 15s, 30s and with each model (128,256,512,1024) for the identification of male and female speakers
 We calculate the false prediction rate in the speaker identification results for a specific set (`results_30_F_1024`). If the speakers differ, this indicates an incorrect prediction and the false prediction counter is incremented. Once all the predictions have been verified, the false prediction rate is calculated by dividing the number of false predictions by the total number of predictions made. This false prediction rate is then added to the `false_prediction_rate` dictionary with the following notation (`false_prediction_rate_30_F_1024`)
 We extract the duration, genre and component information of the model from the keys of a `false_prediction_rate` dictionary. They are used to draw graphs that represent the rate of false predictions according to the duration of the segments, the gender of the speakers and the number of components of the model in different formats to be able to visualize the results well.
+ ```javascript
+false_prediction_rate = {}
+false_predictions = 0
+total_predictions = len(results_3_H_128)
+
+for result in results_3_H_128:
+    test_speaker = result["TestSpeaker"]
+    identified_speaker = result["IdentifiedSpeaker"]
+    
+    if test_speaker != identified_speaker:
+        false_predictions += 1
+
+false_prediction_rate_3_H_128 = false_predictions / total_predictions
+false_prediction_rate["false_prediction_rate_3_H_128"] = false_prediction_rate_3_H_128
+false_prediction_rate_3_H_128
+
+ ```
 This code is applied for each segment of the test and with each model
 ### Step 6: Verification
 For this last step we first start by defining the function get_scores which calculates the score
