@@ -134,6 +134,24 @@ The names of the files containing the trained GMM models are in the form: Identi
  ```
 ### Step 4: Divide the Test data set into 3s, 10s, 15s and 30s segments
 Then we split the test mfcc files into 3s, 10s, 15s and 30s files that we created. We assume that each second equals 100 frames. This division is made to illustrate the influence of segment duration on the ability of the model to recognize the speaker.
+ ```javascript
+ def split_audio_test(test_mfccs, segment_length_sec):
+
+    # Compute the number of frames per segment
+    frames_per_sec = 100  # Assuming 100 frames per second
+    frames_per_segment = int(segment_length_sec * frames_per_sec)
+
+    # Split the test audio into segments
+    num_segments = math.ceil(len(test_mfccs) / frames_per_segment)
+    test_segments = []
+    for i in range(num_segments):
+        start_frame = i * frames_per_segment
+        end_frame = min(start_frame + frames_per_segment, len(test_mfccs))
+        segment = test_mfccs[start_frame:end_frame]
+        test_segments.append(segment)
+
+    return test_segments
+ ```
 ### Step 5: Identification
 In this step, first we define the predict_speaker function which takes as input the mfcc as well as the GMM model to calculate the score of each in order to return the maximum score as well as the predict_speaker above the function:
 Next, we load all the GMM models for men and women and store them in dictionaries based on n_components and gender:key: model_name , value: gmm model
