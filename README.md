@@ -22,7 +22,7 @@ The majority of the solutions developed for speaker recognition aim either to id
 As part of this project, we aim to build a speaker recognition system especially for students in our class. The objective being the identification of the student at first and the verification of the latter thereafter
 The steps followed to carry out this project are as follows:
 
-•[Step 1: Gather all the audio recordings and build the dataset](Step-1:-Gather-all-the-audio-recordings-and-build-the-dataset)
+•Step 1: Gather all the audio recordings and build the dataset
 
 • Step 2: Reading of recordings, extraction of MFCCs and pre-processing.    
 
@@ -44,6 +44,25 @@ Our dataset is formed by a set of audio recordings made by each student in our c
 ### 2nd step :
 • Reading of recordings:
 In order to read the audio recordings we have defined the following function which allows to read the audios from a given path (filepath) using the Scipy library and returns three lists: audios, freqs, filepaths.
+ ```javascript
+ def read_audios(path):
+    audios = []
+    freqs = []
+    filepaths = []
+    #walking through the directory that contains the dataset and reading each file that has the .wav extension
+    for dp, dn, filenames in os.walk(path):
+        for filename in filenames:
+            if filename.endswith('.wav'):
+                filepath = os.path.join(dp, filename)
+                filepaths.append(filepath)
+                with open(filepath, "rb") as f:
+                    # load the audio using scipy
+                    freq, data = scipy.io.wavfile.read(f, mmap=False)
+                    # append the data and frequency to the respective lists
+                    audios.append(data)
+                    freqs.append(freq)
+    return audios, freqs, filepaths 
+ ```
 
 • Extraction of MFFCs and preprocessing:
 After reading the audio recordings comes the step where we must extract the Mfcc coefficients and delete the frames that constitute the silence. To do this, we have defined the following function which takes as input the audios list, the freqs list, the filepaths list, and the path where you want to save the MFFCs.
