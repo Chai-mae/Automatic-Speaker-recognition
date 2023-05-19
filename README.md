@@ -3,7 +3,7 @@
 
    [Introduction:](#Introduction)
    
-   [Project Description:](1-Project-Description)
+   [Project Description:](#1-Project-Description)
    
    [General structure of the project](#2-General-structure-of-the-project)
 
