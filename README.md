@@ -68,11 +68,70 @@ In order to read the audio recordings we have defined the following function whi
 After reading the audio recordings comes the step where we must extract the Mfcc coefficients and delete the frames that constitute the silence. To do this, we have defined the following function which takes as input the audios list, the freqs list, the filepaths list, and the path where you want to save the MFFCs.
 In order to remove the silence, we calculated the energy of the voice signal represented in MFCC form. It is calculated for each frame of the MFCCs using the numpy library. After calculating the energy, a threshold is calculated at 40% of the average energy. This threshold is used to distinguish frames of silence from frames of speech. Speech frames correspond to frames where the energy is above the threshold, while silence frames correspond to frames where the energy is below.
 Extracted MFCCs are saved in genre-based files. The function first extracts gender information from the file name by checking whether it contains the string "H" or "F". Then it saves the MFCCs in a directory named after the genre, and if the directory doesn't exist, it creates a new one. Finally, it saves the MFCCs to a text file with the same name as the original audio file, but with an ".mfcc" extension. MFCC functions are saved as comma-separated values in the text file.
-It can be seen here that the number of frames decreased after removing silence.
+
+ ```javascript
+ def extractMfccs_RemoveSilence_saveMfccs(audio, freq, filepath, directory):
+
+    
+    mfcc_features = mfcc(audio, freq, winlen=0.025, winstep=0.01, numcep=13, nfilt=26, nfft=2048, lowfreq=0,
+                         highfreq=None, preemph=0.97, ceplifter=22, appendEnergy=False)
+
+    energy = np.sum(mfcc_features ** 2, axis=1)
+    threshold = np.mean(energy) * 0.4
+    voiced_indices = np.where(energy > threshold)[0]
+    mfccs_voiced = mfcc_features[voiced_indices, :]
+
+    print(f"MFCCs before removing silence: {mfcc_features.shape}")
+    print(f"MFCCs after removing silence: {mfccs_voiced.shape}")
+
+    gender = None
+    if 'H' in filepath:
+        gender = 'H'
+    elif 'F' in filepath:
+        gender = 'F'
+
+    if gender is not None:
+        gender_dir = os.path.join(directory, gender)
+        if not os.path.exists(gender_dir):
+            os.makedirs(gender_dir)
+        mfcc_file = os.path.join(gender_dir, os.path.splitext(os.path.basename(filepath))[0] + ".mfcc")
+        np.savetxt(mfcc_file, mfccs_voiced, delimiter=',')
+
+ ```
+ It can be seen here that the number of frames decreased after removing silence.
 ### Step 3: Construction of GMM models
 In this step we have defined a function that takes two parameters as input: parentDir (the parent directory path) and n_components (the number of components for the GMM). This function allows you to read a file containing the MFFcs of an audio, initialize a GMM model, train it on the MFFCs, then save it in a pickle file.
 Each student has four Gmm models: one model with 128 Gaussians, a second with 256, a third with 512 and a last with 1024.
 The names of the files containing the trained GMM models are in the form: Identifier.n_component.gmm
+ ```javascript
+ def gmm(parentDir,  n_components):
+
+    # Loop over the two folders "H" and "F"
+    for folder in ['H', 'F']:
+        # Get the list of files in the folder
+        folder_path = os.path.join(parentDir, folder)
+         # Get the list of files in the folder
+        files = os.listdir(folder_path)
+
+        # Loop over the files in the folder
+        for file in files:
+            # Load the MFCC features from the file
+            mfcc_features =np.loadtxt(os.path.join(folder_path, file), delimiter = ',')
+    
+
+            # Create a GMM object
+            gmm = GaussianMixture(n_components=n_components)
+
+            # Fit the GMM to the MFCC features
+            gmm.fit(mfcc_features)
+
+            # Save the trained GMM to a file with a name of Hi.n_components.gmm
+            gmm_file_name = os.path.splitext(file)[0] + '.' + str(n_components) + '.gmm'
+            gmm_file_path = os.path.join(r'C:\Users\ASUS ROG STRIX\Desktop\Projet\RAL\GMM', gmm_file_name)
+            with open(gmm_file_path, 'wb') as f:
+                pickle.dump(gmm, f)
+
+ ```
 ### Step 4: Divide the Test data set into 3s, 10s, 15s and 30s segments
 Then we split the test mfcc files into 3s, 10s, 15s and 30s files that we created. We assume that each second equals 100 frames. This division is made to illustrate the influence of segment duration on the ability of the model to recognize the speaker.
 ### Step 5: Identification
