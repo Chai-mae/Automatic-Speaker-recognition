@@ -198,7 +198,8 @@ for result in results_3_H_128:
  ```
  This is what we have get after running the above code :
  
- ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/0368ccc5-0785-4ba2-9d8f-bcebb1125110)
+ ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/0368ccc5-0785-4ba2-9d8f-bcebb1125110) ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/5e704979-da4b-49b8-9a47-91b11cab3181)
+
 
 We apply this block of code for each segment of each duration of 3s, 10s, 15s, 30s and with each model (128,256,512,1024) for the identification of male and female speakers
 We calculate the false prediction rate in the speaker identification results for a specific set (`results_30_F_1024`). If the speakers differ, this indicates an incorrect prediction and the false prediction counter is incremented. Once all the predictions have been verified, the false prediction rate is calculated by dividing the number of false predictions by the total number of predictions made. This false prediction rate is then added to the `false_prediction_rate` dictionary with the following notation (`false_prediction_rate_duration_Gender_ncomponents`)
