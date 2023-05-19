@@ -340,3 +340,7 @@ In the identification we have obtained plotted different curves in order to inte
 
 We can see from the plots that the best results are given by the GMM model with 512 components. And also we can say that the segments of 15 gives the best results and this because the segments of 15 s may contain much more information of the speaker's characteristics than the other segments. Anothen thing we can deduce from the plots is that the male tests are easier to be predicted than the female ones, in fact the majority of the false prediction rates are zero.  
     
+As for the verification, we have obtained the following DET curves : 
+
+![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/6c959e53-7dca-4234-a3c4-8faa3969e589)
+
