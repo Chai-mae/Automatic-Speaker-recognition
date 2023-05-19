@@ -191,8 +191,8 @@ for result in results_3_H_128:
 
  ```
 We apply this block of code for each segment of each duration of 3s, 10s, 15s, 30s and with each model (128,256,512,1024) for the identification of male and female speakers
-We calculate the false prediction rate in the speaker identification results for a specific set (`results_30_F_1024`). If the speakers differ, this indicates an incorrect prediction and the false prediction counter is incremented. Once all the predictions have been verified, the false prediction rate is calculated by dividing the number of false predictions by the total number of predictions made. This false prediction rate is then added to the `false_prediction_rate` dictionary with the following notation (`false_prediction_rate_30_F_1024`)
-We extract the duration, genre and component information of the model from the keys of a `false_prediction_rate` dictionary. They are used to draw graphs that represent the rate of false predictions according to the duration of the segments, the gender of the speakers and the number of components of the model in different formats to be able to visualize the results well.
+We calculate the false prediction rate in the speaker identification results for a specific set (`results_30_F_1024`). If the speakers differ, this indicates an incorrect prediction and the false prediction counter is incremented. Once all the predictions have been verified, the false prediction rate is calculated by dividing the number of false predictions by the total number of predictions made. This false prediction rate is then added to the `false_prediction_rate` dictionary with the following notation (`false_prediction_rate_duration_Gender_ncomponents`)
+We extract the duration, genre and component information of the model from the keys of a `false_prediction_rate` dictionary. Those dictionaries are used to draw graphs that represent the rate of false predictions according to the duration of the segments, the gender of the speakers and the number of components of the model in different formats to be able to visualize the results well.
  ```javascript
 false_prediction_rate = {}
 false_predictions = 0
@@ -210,12 +210,101 @@ false_prediction_rate["false_prediction_rate_3_H_128"] = false_prediction_rate_3
 false_prediction_rate_3_H_128
 
  ```
-This code is applied for each segment of the test and with each model
 ### Step 6: Verification
-For this last step we first start by defining the function get_scores which calculates the score
-Then we go to load all the GMM models for men and women and store them in dictionaries according to n_components and gender:key: model_name , value: gmm model
-and also files containing Mfcc features for male and female and store them in dictionaries according to duration and gender:key: model_name , value: mfcc_features
-as in the identification step. After we go to the step of obtaining the predictions of the segments of the test, we start with the men, we use the get_scores function to calculate the score of each segment with each GMM model and store them in a filename with score
-After obtaining the scores on the ordinates from the minimum score to the maximum and on pass to generate a DET (Detection Error Tradeoff) curve and calculate the equalization error rate EER. We start by extracting the genuine partitions and the impostor partitions from a set of results. Then, we determine the minimum and maximum scores among all the scores to generate a certain number of thresholds using the linspace function. Then, for each threshold, we calculate the number of false rejections and false acceptances and then their rates. These rates are stored in lists and the FAR-FRR curve (DET) is plotted and the EER point is displayed with an annotation.
+For this last step we first start by defining the function get_scores which calculates the score of a given test segment with a given gmm model:
+ ```javascript
+def get_scores(mfcc_features, gmm_models):
+    scores = {}
+    for model_name, gmm_model in gmm_models.items():
+        scores[model_name.split(".")[0]] = gmm_model.score(mfcc_features)
+    return scores
+ ``` 
+Then we go to load all the GMM models for men and women and store them in dictionaries as in the identification step, and we load also the files containing the Mfcc features for male and female and store them in dictionaries according to duration and gender ( key: model_name , value: mfcc_features ).
+
+After we go to the step of obtaining the predictions of the segments of the test, we start with the men, we use the get_scores function to calculate the score of each segment with each GMM model and store them in a filename with score
+```javascript
+results_3_F_128 = []
+
+# Calculate scores for each GMM model and store file name with score
+for test_segment_name, test_segment in test_files_3_F.items():
+    score = get_scores(test_segment, gmm_models_F_128)
+    results_3_F_128.append((test_segment_name, score))
+
+# Printing the results
+for result in results_3_F_128:
+    file_name, score = result
+    print(f"File: {file_name} ,Score: {score}")
+  ```
+  
+After obtaining the scores, we sort them from the minimum score to the maximum then we generate a DET (Detection Error Tradeoff) curve and calculate the equalization error rate EER. We start by extracting the genuine partitions and the impostor partitions from a set of results. Then, we determine the minimum and maximum scores among all the scores to generate a certain number of thresholds using the linspace function. Then, for each threshold, we calculate the number of false rejections and false acceptances and then their rates. These rates are stored in lists and the FAR-FRR curve (DET) is plotted and the EER point is displayed with an annotation.
+
+```javascript
+# Initialize variables
+genuine_scores = defaultdict(list)  # Dictionary to store genuine scores for each client
+impostor_scores = []  # List to store impostor scores
+
+# Extract genuine scores and impostor scores
+for result in results_3_F_128:
+    file_name, score = result
+    client_name = file_name.split('.')[0]  # Extract client name from file name
+
+    genuine_scores[client_name].append(score[client_name])
+
+    impostor_scores.extend([s for key, s in score.items() if key != client_name])
+
+# Compute the minimum and maximum scores
+min_score = min(sorted_scores_array)
+max_score = max(sorted_scores_array)
+
+# Set the number of thresholds and generate them using linspace
+num_thresholds = 1000
+thresholds = np.geomspace(max_score, min_score, num_thresholds)
+
+# Initialize lists for FAR and FRR
+far = []
+frr = []
+
+# Iterate over thresholds
+for threshold in thresholds:
+    # Compute the number of false accepts (FAR) and false rejects (FRR)
+    false_accepts = sum(score >= threshold for score in impostor_scores)
+    false_rejects = 0
+    for client_scores in genuine_scores.values():
+        false_rejects += sum(score < threshold for score in client_scores)
+
+    # Compute the FAR and FRR rates
+    far_rate = false_accepts / len(impostor_scores)
+    frr_rate = false_rejects / sum(len(client_scores) for client_scores in genuine_scores.values())
+
+    # Append the FAR and FRR rates to the lists
+    far.append(far_rate)
+    frr.append(frr_rate)
+
+# Find the threshold with the closest FAR and FRR
+eer_threshold = thresholds[np.argmin(np.abs(np.array(far) - np.array(frr)))]
+
+# Compute the EER values
+eer_far = far[np.argmin(np.abs(np.array(far) - np.array(frr)))]
+eer_frr = frr[np.argmin(np.abs(np.array(far) - np.array(frr)))]
+
+# Plot the FAR and FRR curve
+plt.plot(far, frr)
+plt.xlabel('False Acceptance Rate (FAR)')
+plt.ylabel('False Rejection Rate (FRR)')
+plt.title('DET Curve')
+plt.grid(True)
+
+# Plot the EER point
+plt.scatter(eer_far, eer_frr, color='red', marker='o', label='EER')
+
+# Add legend
+plt.legend()
+
+# Add text annotation for EER point
+plt.annotate(f'EER: ({eer_far:.3f}, {eer_frr:.3f})', (eer_far, eer_frr), xytext=(eer_far + 0.05, eer_frr), color='red')
+
+plt.show()
+```
+
 
     
