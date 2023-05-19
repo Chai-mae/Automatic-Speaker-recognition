@@ -9,7 +9,7 @@
 
    [Conclusion](#Conclusion)
    
-## Introduction :
+**<h2>Introduction:</h2>**
 Automatic speaker recognition is a part of speech analysis, it is the set of techniques and algorithms allowing the automatic identification and authentication of individuals based on their unique speech characteristics, such as their patterns voices, their speech patterns and other acoustic characteristics. There are two types of recognition:
 
 • Text-dependent recognition in this case the algorithm is trained by pre-established sentences and said by all the speakers to be recognized
