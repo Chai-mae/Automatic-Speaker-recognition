@@ -13,10 +13,15 @@ As part of this project, we aim to build a speaker recognition system especially
 The steps followed to carry out this project are as follows:
 
 • Step 1: Gather all the audio recordings and build the dataset
+
 • Step 2: Reading of recordings, extraction of MFCCs and pre-processing.    
+
 • Step 3: Train the GMM models for each speaker
+
 • Step 4: Divide the Test data set into 3s,10s,15s and 30s segments
+
 • Step 5: Identification
+
 • Step 6: Verification
     
 In the rest of this report, we will detail each step of the approach followed.
