@@ -328,5 +328,15 @@ plt.show()
 ```
 **<h2>Obtained Results</h2>**
 
+In the identification we have obtained plotted different curves in order to interpret the results better. Here are the plots obtained :
+
+![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/5e31e04e-516e-4d1d-b423-abdc288228b2)
+
+![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/11a40b0c-057b-4c66-b4b7-a228a2e7c1e0)
+
+![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/2a990164-fb37-4d47-baa4-8e714f585f0c)
+
+![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/f42ad589-8c4e-4fc7-8294-2d2eb7c10c55)
+
 
     
