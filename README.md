@@ -196,7 +196,7 @@ for result in results_3_H_128:
 
 
  ```
- This is what we have get after running the above code :
+ After running the code described above, the following outcomes can be expected:
  
  ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/0368ccc5-0785-4ba2-9d8f-bcebb1125110) ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/5e704979-da4b-49b8-9a47-91b11cab3181)
 
