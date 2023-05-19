@@ -196,7 +196,8 @@ for result in results_3_H_128:
 
 
  ```
- This is an example of what we have displayed after running the above code :
+ This is what we have get after running the above code :
+ 
  ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/0368ccc5-0785-4ba2-9d8f-bcebb1125110)
 
 We apply this block of code for each segment of each duration of 3s, 10s, 15s, 30s and with each model (128,256,512,1024) for the identification of male and female speakers
