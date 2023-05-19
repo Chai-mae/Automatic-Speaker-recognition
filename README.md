@@ -168,8 +168,9 @@ def predict_speaker(mfcc_features, gmm_models):
 
     return highest_score, predicted_speaker
  ```
-Next, we load all the GMM models for men and women and store them in dictionaries based on n_components and gender:key: model_name , value: gmm model
-and also files containing mfcc features for male and female and store them in dictionaries according to duration and gender:key: model_name , value: mfcc_features
+Next, we load all the GMM models for men and women and store them in dictionaries based on n_components and gender:(key: model_name , value: gmm model)
+and also we load files containing mfcc features for male and female and store them in dictionaries according to duration and gender: (key: model_name , value: mfcc_features)
+
 We go to the speaker identification stage, this part of code, we apply the predict_speaker function for each segment, and store the results in a list of dictionaries. Each dictionary contains information such as the name of the test speaker, the number of segments, the maximum score obtained and the predicted speaker.
  ```javascript
 results_3_H_128 = []
