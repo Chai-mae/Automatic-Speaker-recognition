@@ -22,17 +22,17 @@ The majority of the solutions developed for speaker recognition aim either to id
 As part of this project, we aim to build a speaker recognition system especially for students in our class. The objective being the identification of the student at first and the verification of the latter thereafter
 The steps followed to carry out this project are as follows:
 
-[•Step 1: Gather all the audio recordings and build the dataset](Step 1 : Dataset)
+[•Step 1: Gather all the audio recordings and build the dataset](#Step-1-:-Dataset)
 
-[• Step 2: Reading of recordings, extraction of MFCCs and pre-processing.    ](Step 2:)
+[• Step 2: Reading of recordings, extraction of MFCCs and pre-processing.    ](#Step-2:)
 
-[• Step 3: Train the GMM models for each speaker](Step 3: Construction of GMM models)
+[• Step 3: Train the GMM models for each speaker](#Step-3:-Construction-of-GMM-models)
 
-[• Step 4: Divide the Test data set into 3s,10s,15s and 30s segments](Step 4: Divide the Test data set into 3s, 10s, 15s and 30s segments)
+[• Step 4: Divide the Test data set into 3s,10s,15s and 30s segments](#Step-4:-Divide-the-Test-data-set-into-3s,-10s,-15s-and-30s-segments)
 
-[• Step 5: Identification](Step 5: Identification)
+[• Step 5: Identification](#Step-5:-Identification)
 
-[• Step 6: Verification](Step 6: Verification)
+[• Step 6: Verification](#Step-6:-Verification)
     
 In the rest of this report, we will detail each step of the approach followed.
 
