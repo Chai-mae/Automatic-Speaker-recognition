@@ -5,7 +5,7 @@
    
    [Project Description:](1-Project-Description:)
    
-   [General structure of the project](#2-General-structure-of-the-project)
+   [General structure of the project](2-General-structure-of-the-project)
 
    [Conclusion](#Conclusion)
    
