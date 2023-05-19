@@ -1,9 +1,9 @@
 # Automatic-Speaker-recognition
 **<h2>Table of contents</h2>**
 
-   [Introduction:](#Introduction:)
+   [Introduction:](#Introduction)
    
-   [Project Description:](1-Project-Description:)
+   [Project Description:](1-Project-Description)
    
    [General structure of the project](2-General-structure-of-the-project)
 
