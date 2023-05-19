@@ -33,6 +33,7 @@ Our dataset is formed by a set of audio recordings made by each student in our c
 ### 2nd step :
 • Reading of recordings:
 In order to read the audio recordings we have defined the following function which allows to read the audios from a given path (filepath) using the Scipy library and returns three lists: audios, freqs, filepaths.
+
 • Extraction of MFFCs and preprocessing:
 After reading the audio recordings comes the step where we must extract the Mfcc coefficients and delete the frames that constitute the silence. To do this, we have defined the following function which takes as input the audios list, the freqs list, the filepaths list, and the path where you want to save the MFFCs.
 In order to remove the silence, we calculated the energy of the voice signal represented in MFCC form. It is calculated for each frame of the MFCCs using the numpy library. After calculating the energy, a threshold is calculated at 40% of the average energy. This threshold is used to distinguish frames of silence from frames of speech. Speech frames correspond to frames where the energy is above the threshold, while silence frames correspond to frames where the energy is below.
