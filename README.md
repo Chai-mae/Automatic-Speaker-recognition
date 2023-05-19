@@ -1,40 +1,55 @@
 # Automatic-Speaker-recognition
 ## Introduction :
-Automatic Speaker Recognition is a part of speech analysis that encompasses techniques and algorithms for the identification and automatic authentication of individuals based on their unique vocal characteristics, such as voice patterns, speech patterns, and other acoustic features. There are two types of recognition:
+Automatic speaker recognition is a part of speech analysis, it is the set of techniques and algorithms allowing the automatic identification and authentication of individuals based on their unique speech characteristics, such as their patterns voices, their speech patterns and other acoustic characteristics. There are two types of recognition:
 
-1. Text-dependent recognition: In this case, the algorithm is trained on pre-established phrases spoken by all the speakers to be recognized.
-2. Text-independent recognition: In this case, there is no training based on specific phrases.
+• Text-dependent recognition in this case the algorithm is trained by pre-established sentences and said by all the speakers to be recognized
+• Recognition independent of the text in this case there is no training following one or more specific sentences
+The majority of the solutions developed for speaker recognition aim either to identify the speaker, i.e. to recognize the person who spoke among a group of speakers, or else verification or authentication which consists of checking with a minimal level of doubt that a person is the one who recorded their voice during verification.
 
-The majority of speaker recognition solutions aim either at speaker identification, which involves recognizing the person speaking among a group of speakers, or speaker verification/authentication, which verifies, with a minimal level of doubt, that a person is the same one who recorded their voice during the verification process.
+## Project Description:
 
-Project Description:
+As part of this project, we aim to build a speaker recognition system especially for students in our class. The objective being the identification of the student at first and the verification of the latter thereafter
+The steps followed to carry out this project are as follows:
+    • Step 1: Gather all the audio recordings and build the dataset
+    • Step 2: Reading of recordings, extraction of MFCCs and pre-processing.
+    • Step 3: Train the GMM models for each speaker
+    • Step 4: Divide the Test data set into 3s,10s,15s and 30s segments
+    • Step 5: Identification
+    • Step 6: Verification
+In the rest of this report, we will detail each step of the approach followed.
 
-In this project, our goal is to build a speaker recognition system specifically for the students in our class. The objective is to first identify the student and then verify their identity. The steps involved in accomplishing this project are as follows:
+## General structure of the project
+### Step 1 :
+• Dataset
+Our dataset is formed by a set of audio recordings made by each student in our class. Indeed each of us was responsible for recording two audios of 1 min one for the train and one for the test and depositing them in the drive as well as mentioning his name in the dedicated Excel file to assign each student his identifier. We have two files Train and Test each contains sub-files (F) and (H) in which the records are stored.
+### 2nd step :
+• Reading of recordings:
+In order to read the audio recordings we have defined the following function which allows to read the audios from a given path (filepath) using the Scipy library and returns three lists: audios, freqs, filepaths.
+• Extraction of MFFCs and preprocessing:
+After reading the audio recordings comes the step where we must extract the Mfcc coefficients and delete the frames that constitute the silence. To do this, we have defined the following function which takes as input the audios list, the freqs list, the filepaths list, and the path where you want to save the MFFCs.
+In order to remove the silence, we calculated the energy of the voice signal represented in MFCC form. It is calculated for each frame of the MFCCs using the numpy library. After calculating the energy, a threshold is calculated at 40% of the average energy. This threshold is used to distinguish frames of silence from frames of speech. Speech frames correspond to frames where the energy is above the threshold, while silence frames correspond to frames where the energy is below.
+Extracted MFCCs are saved in genre-based files. The function first extracts gender information from the file name by checking whether it contains the string "H" or "F". Then it saves the MFCCs in a directory named after the genre, and if the directory doesn't exist, it creates a new one. Finally, it saves the MFCCs to a text file with the same name as the original audio file, but with an ".mfcc" extension. MFCC functions are saved as comma-separated values in the text file.
+It can be seen here that the number of frames decreased after removing silence.
+### Step 3: Construction of GMM models
+In this step we have defined a function that takes two parameters as input: parentDir (the parent directory path) and n_components (the number of components for the GMM). This function allows you to read a file containing the MFFcs of an audio, initialize a GMM model, train it on the MFFCs, then save it in a pickle file.
+Each student has four Gmm models: one model with 128 Gaussians, a second with 256, a third with 512 and a last with 1024.
+The names of the files containing the trained GMM models are in the form: Identifier.n_component.gmm
+### Step 4: Divide the Test data set into 3s, 10s, 15s and 30s segments
+Then we split the test mfcc files into 3s, 10s, 15s and 30s files that we created. We assume that each second equals 100 frames. This division is made to illustrate the influence of segment duration on the ability of the model to recognize the speaker.
+### Step 5: Identification
+In this step, first we define the predict_speaker function which takes as input the mfcc as well as the GMM model to calculate the score of each in order to return the maximum score as well as the predict_speaker above the function:
+Next, we load all the GMM models for men and women and store them in dictionaries based on n_components and gender:key: model_name , value: gmm model
+and also files containing mfcc features for male and female and store them in dictionaries according to duration and gender:key: model_name , value: mfcc_features
+We go to the speaker identification stage, this part of code, we apply the predict_speaker function for each segment, and store the results in a list of dictionaries. Each dictionary contains information such as the name of the test speaker, the number of segments, the maximum score obtained and the predicted speaker.
+We apply this block of code for each segment of each duration of 3s, 10s, 15s, 30s and with each model (128,256,512,1024) for the identification of male and female speakers
+We calculate the false prediction rate in the speaker identification results for a specific set (`results_30_F_1024`). If the speakers differ, this indicates an incorrect prediction and the false prediction counter is incremented. Once all the predictions have been verified, the false prediction rate is calculated by dividing the number of false predictions by the total number of predictions made. This false prediction rate is then added to the `false_prediction_rate` dictionary with the following notation (`false_prediction_rate_30_F_1024`)
+We extract the duration, genre and component information of the model from the keys of a `false_prediction_rate` dictionary. They are used to draw graphs that represent the rate of false predictions according to the duration of the segments, the gender of the speakers and the number of components of the model in different formats to be able to visualize the results well.
+This code is applied for each segment of the test and with each model
+### Step 6: Verification
+For this last step we first start by defining the function get_scores which calculates the score
+Then we go to load all the GMM models for men and women and store them in dictionaries according to n_components and gender:key: model_name , value: gmm model
+and also files containing Mfcc features for male and female and store them in dictionaries according to duration and gender:key: model_name , value: mfcc_features
+as in the identification step. After we go to the step of obtaining the predictions of the segments of the test, we start with the men, we use the get_scores function to calculate the score of each segment with each GMM model and store them in a filename with score
+After obtaining the scores on the ordinates from the minimum score to the maximum and on pass to generate a DET (Detection Error Tradeoff) curve and calculate the equalization error rate EER. We start by extracting the genuine partitions and the impostor partitions from a set of results. Then, we determine the minimum and maximum scores among all the scores to generate a certain number of thresholds using the linspace function. Then, for each threshold, we calculate the number of false rejections and false acceptances and then their rates. These rates are stored in lists and the FAR-FRR curve (DET) is plotted and the EER point is displayed with an annotation.
 
-Step 1: Gather Audio Recordings and Build the Dataset
-- Collect audio recordings from each student in our class.
-- Each student is responsible for recording two audio samples of 1 minute each, one for training and one for testing purposes.
-- Store the recordings in a shared drive and create an Excel file to assign each student with a unique identifier.
-- We will have separate training and testing files, each containing sub-files (F) and (H) for female and male speakers, respectively.
-
-Step 2: Audio Playback, MFCC Extraction, and Preprocessing
-- Read the audio recordings using the SciPy library, defining a function that takes a file path as input and returns three lists: audios, frequencies, and file paths.
-- Extract MFCC (Mel-frequency cepstral coefficients) features and preprocess the data.
-- To remove silence, calculate the energy of the vocal signal represented in MFCC form for each frame. Use numpy library to calculate the energy.
-- Set a threshold at 40% of the average energy to distinguish between speech frames and silence frames. Speech frames have energy higher than the threshold, while silence frames have energy lower.
-- Save the extracted MFCCs in text files based on gender. Create a directory named after the gender if it doesn't exist, and save the MFCCs in a text file with the same name as the original audio file but with a ".mfcc" extension. The MFCC values are comma-separated in the text file.
-- Observe the reduction in the number of frames after removing silence.
-
-Step 3: GMM Model Training
-- Define a function that takes two inputs: the parent directory path and the number of components for the GMM (Gaussian Mixture Model).
-- Read a file containing the MFCCs of an audio sample, initialize a GMM model, train the model on the MFCCs, and save it as a pickle file.
-- Each student will have four GMM models: one with 128 Gaussians, another with 256, a third with 512, and the last one with 1024.
-- The GMM model files are named using the following format: Identifier.n_component.gmm
-
-Step 4: Split the Test Data into Segments of 3s, 10s, 15s, and 30s
-- Divide the MFCC files of the test data into segments of 3s, 10s, 15s, and 30s.
-- Assume each second corresponds to 100 frames.
-- This division is done to illustrate the influence of segment duration on the model's ability to recognize the speaker.
-
-Step 5: Speaker Identification
-- Define a function called "predict_speaker" that takes MFCC features and GMM models as input to calculate the
+    
