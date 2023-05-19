@@ -17,7 +17,7 @@ Automatic speaker recognition is a part of speech analysis, it is the set of tec
 • Recognition independent of the text in this case there is no training following one or more specific sentences
 The majority of the solutions developed for speaker recognition aim either to identify the speaker, i.e. to recognize the person who spoke among a group of speakers, or else verification or authentication which consists of checking with a minimal level of doubt that a person is the one who recorded their voice during verification.
 
-## Project Description:
+**<h2>Project Description:</h2>**
 
 As part of this project, we aim to build a speaker recognition system especially for students in our class. The objective being the identification of the student at first and the verification of the latter thereafter
 The steps followed to carry out this project are as follows:
@@ -36,7 +36,8 @@ The steps followed to carry out this project are as follows:
     
 In the rest of this report, we will detail each step of the approach followed.
 
-## General structure of the project
+**<h2>General structure of the project</h2>**
+
 ### Step 1 :
 • Dataset
 Our dataset is formed by a set of audio recordings made by each student in our class. Indeed each of us was responsible for recording two audios of 1 min one for the train and one for the test and depositing them in the drive as well as mentioning his name in the dedicated Excel file to assign each student his identifier. We have two files Train and Test each contains sub-files (F) and (H) in which the records are stored.
