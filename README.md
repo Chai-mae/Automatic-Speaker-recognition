@@ -41,10 +41,12 @@ In the rest of this report, we will detail each step of the approach followed.
 
 **<h2>General structure of the project</h2>**
 
-**<h2>Step 1: Gather all the audio recordings and build the dataset</h2>**
+### Step 1: Gather all the audio recordings and build the dataset 
+
 Our dataset is formed by a set of audio recordings made by each student in our class. Indeed each of us was responsible for recording two audios of 1 min one for the train and one for the test and depositing them in the drive as well as mentioning his name in the dedicated Excel file to assign each student his identifier. We have two files Train and Test each contains sub-files (F) and (H) in which the records are stored.
 ### Step 2:
 • Reading of recordings:
+
 In order to read the audio recordings we have defined the following function which allows to read the audios from a given path (filepath) using the Scipy library and returns three lists: audios, freqs, filepaths.
  ```javascript
  def read_audios(path):
@@ -67,6 +69,7 @@ In order to read the audio recordings we have defined the following function whi
  ```
 
 • Extraction of MFFCs and preprocessing:
+
 After reading the audio recordings comes the step where we must extract the Mfcc coefficients and delete the frames that constitute the silence. To do this, we have defined the following function which takes as input the audios list, the freqs list, the filepaths list, and the path where you want to save the MFFCs.
 In order to remove the silence, we calculated the energy of the voice signal represented in MFCC form. It is calculated for each frame of the MFCCs using the numpy library. After calculating the energy, a threshold is calculated at 40% of the average energy. This threshold is used to distinguish frames of silence from frames of speech. Speech frames correspond to frames where the energy is above the threshold, while silence frames correspond to frames where the energy is below.
 Extracted MFCCs are saved in genre-based files. The function first extracts gender information from the file name by checking whether it contains the string "H" or "F". Then it saves the MFCCs in a directory named after the genre, and if the directory doesn't exist, it creates a new one. Finally, it saves the MFCCs to a text file with the same name as the original audio file, but with an ".mfcc" extension. MFCC functions are saved as comma-separated values in the text file.
@@ -105,6 +108,7 @@ Extracted MFCCs are saved in genre-based files. The function first extracts gend
  ![Screenshot_872](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/f88cf57d-2d3e-4cfe-9653-8359e11220b9)
 
 ### Step 3: Construction of GMM models
+
 In this step we have defined a function that takes two parameters as input: parentDir (the parent directory path) and n_components (the number of components for the GMM). This function allows you to read a file containing the MFFcs of an audio, initialize a GMM model, train it on the MFFCs, then save it in a pickle file.
 Each student has four Gmm models: one model with 128 Gaussians, a second with 256, a third with 512 and a last with 1024.
 The names of the files containing the trained GMM models are in the form: Identifier.n_component.gmm
@@ -138,6 +142,7 @@ The names of the files containing the trained GMM models are in the form: Identi
 
  ```
 ### Step 4: Divide the Test data set into 3s, 10s, 15s and 30s segments
+
 Then we split the test mfcc files into 3s, 10s, 15s and 30s files that we created. We assume that each second equals 100 frames. This division is made to illustrate the influence of segment duration on the ability of the model to recognize the speaker.
  ```javascript
  def split_audio_test(test_mfccs, segment_length_sec):
@@ -158,6 +163,7 @@ Then we split the test mfcc files into 3s, 10s, 15s and 30s files that we create
     return test_segments
  ```
 ### Step 5: Identification
+
 In this step, first we define the predict_speaker function which takes as input the mfcc as well as the GMM model to calculate the score of each in order to return the maximum score as well as the predict_speaker below the function:
  ```javascript
 def predict_speaker(mfcc_features, gmm_models):
@@ -222,6 +228,7 @@ false_prediction_rate_3_H_128
 
  ```
 ### Step 6: Verification
+
 For this last step we first start by defining the function get_scores which calculates the score of a given test segment with a given gmm model:
  ```javascript
 def get_scores(mfcc_features, gmm_models):
