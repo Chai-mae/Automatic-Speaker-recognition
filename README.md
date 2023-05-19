@@ -343,4 +343,13 @@ We can see from the plots that the best results are given by the GMM model with 
 As for the verification, we have obtained the following DET curves : 
 
 ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/6c959e53-7dca-4234-a3c4-8faa3969e589)
+![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/b8de4009-bc90-43b8-ba45-4fc02c2a110f)
+![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/49353e73-3882-4dae-a09f-256c0c83f622)
+![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/8e97e744-e5a7-40a4-9c2e-b1853914215f)
+![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/f92f0fc4-8600-471e-a8a2-f0dd055ccd1f)
+![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/5dc83a82-f0ce-46f2-ade7-31c2fdf90004)
+![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/3eb14514-cf25-4fb5-935d-18aa4f7a498c)
+![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/77478faf-e084-48b3-8116-65b1b6f5e43b)
+
+
 
