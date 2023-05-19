@@ -1,4 +1,14 @@
 # Automatic-Speaker-recognition
+**<h2>Table of contents</h2>**
+
+   [Introduction](#Introduction)
+   
+   [Project Description:](1-Project-Description:)
+   
+   [General structure of the project](#2-General-structure-of-the-project)
+
+   [Conclusion](#Conclusion)
+   
 ## Introduction :
 Automatic speaker recognition is a part of speech analysis, it is the set of techniques and algorithms allowing the automatic identification and authentication of individuals based on their unique speech characteristics, such as their patterns voices, their speech patterns and other acoustic characteristics. There are two types of recognition:
 
