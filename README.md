@@ -6,6 +6,8 @@
    [Project Description:](#Project-Description)
    
    [General structure of the project](#General-structure-of-the-project)
+   
+   [Obtained Results](#Obtained-Results)
 
    [Conclusion](#Conclusion)
    
@@ -194,6 +196,9 @@ for result in results_3_H_128:
 
 
  ```
+ This is an example of what we have displayed after running the above code :
+ ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/0368ccc5-0785-4ba2-9d8f-bcebb1125110)
+
 We apply this block of code for each segment of each duration of 3s, 10s, 15s, 30s and with each model (128,256,512,1024) for the identification of male and female speakers
 We calculate the false prediction rate in the speaker identification results for a specific set (`results_30_F_1024`). If the speakers differ, this indicates an incorrect prediction and the false prediction counter is incremented. Once all the predictions have been verified, the false prediction rate is calculated by dividing the number of false predictions by the total number of predictions made. This false prediction rate is then added to the `false_prediction_rate` dictionary with the following notation (`false_prediction_rate_duration_Gender_ncomponents`)
 We extract the duration, genre and component information of the model from the keys of a `false_prediction_rate` dictionary. Those dictionaries are used to draw graphs that represent the rate of false predictions according to the duration of the segments, the gender of the speakers and the number of components of the model in different formats to be able to visualize the results well.
@@ -309,6 +314,7 @@ plt.annotate(f'EER: ({eer_far:.3f}, {eer_frr:.3f})', (eer_far, eer_frr), xytext=
 
 plt.show()
 ```
+**<h2>Obtained Results</h2>**
 
 
     
