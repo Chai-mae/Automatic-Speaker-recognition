@@ -99,6 +99,7 @@ Extracted MFCCs are saved in genre-based files. The function first extracts gend
 
  ```
  It can be seen here that the number of frames decreased after removing silence.
+ 
  ![Screenshot_872](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/f88cf57d-2d3e-4cfe-9653-8359e11220b9)
 
 ### Step 3: Construction of GMM models
