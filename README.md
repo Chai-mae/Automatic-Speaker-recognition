@@ -41,7 +41,7 @@ In the rest of this report, we will detail each step of the approach followed.
 
 **<h2>General structure of the project</h2>**
 
-### Step 1: Gather all the audio recordings and build the dataset 
+**<h3>Step 1: Gather all the audio recordings and build the dataset</h3>** 
 
 Our dataset is formed by a set of audio recordings made by each student in our class. Indeed each of us was responsible for recording two audios of 1 min one for the train and one for the test and depositing them in the drive as well as mentioning his name in the dedicated Excel file to assign each student his identifier. We have two files Train and Test each contains sub-files (F) and (H) in which the records are stored.
 ### Step 2:
