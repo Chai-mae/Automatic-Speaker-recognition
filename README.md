@@ -3,9 +3,9 @@
 
    [Introduction:](#Introduction)
    
-   [Project Description:](#1-Project-Description)
+   [Project Description:](#Project-Description)
    
-   [General structure of the project](#2-General-structure-of-the-project)
+   [General structure of the project](#General-structure-of-the-project)
 
    [Conclusion](#Conclusion)
    
