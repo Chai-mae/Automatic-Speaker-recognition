@@ -328,7 +328,7 @@ plt.show()
 ```
 **<h2>Obtained Results</h2>**
 
-In the identification we have obtained plotted different curves in order to interpret the results better. Here are the plots obtained :
+• In the identification we have obtained plotted different curves in order to interpret the results better. Here are the plots obtained :
 
 ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/5e31e04e-516e-4d1d-b423-abdc288228b2)
 
@@ -340,7 +340,7 @@ In the identification we have obtained plotted different curves in order to inte
 
 We can see from the plots that the best results are given by the GMM model with 512 components. And also we can say that the segments of 15 gives the best results and this because the segments of 15 s may contain much more information of the speaker's characteristics than the other segments. Anothen thing we can deduce from the plots is that the male tests are easier to be predicted than the female ones, in fact the majority of the false prediction rates are zero.  
     
-As for the verification, we have obtained the following DET curves : 
+• As for the verification, we have obtained the following DET curves : 
 
 ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/6c959e53-7dca-4234-a3c4-8faa3969e589)
 ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/b8de4009-bc90-43b8-ba45-4fc02c2a110f)
@@ -350,6 +350,17 @@ As for the verification, we have obtained the following DET curves :
 ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/5dc83a82-f0ce-46f2-ade7-31c2fdf90004)
 ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/3eb14514-cf25-4fb5-935d-18aa4f7a498c)
 ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/77478faf-e084-48b3-8116-65b1b6f5e43b)
+
+In the case of speaker authentication, the performance of a speech verification system is assessed using the Detection Error Tradeoff (DET) curve. The tradeoff between the False Acceptance Rate (FAR) and the False Rejection Rate (FRR) at various operational points is displayed.
+
+The DET curve typically uses a logarithmic scale to represent the FRR on the x-axis and the FAR on the y-axis. You can set an acceptable threshold that balances the false acceptance and false rejection rates based on the particular requirements and limits of the application by examining the DET curve and seeing the system's performance at various operating points.
+
+A low value for both FAR and FRR would be indicated by the DET curve being as close as feasible to the bottom-left corner of the plot. On the DET curve, the Equal Error Rate (EER) is a frequently utilized point. The operational point where the FAR and FRR are equal is what it represents. The EER offers a single metric that measures the effectiveness of the system and can be used to contrast various speaker verification systems or to establish a practical cutoff point for decision-making.
+
+
+
+
+
 
 
 
