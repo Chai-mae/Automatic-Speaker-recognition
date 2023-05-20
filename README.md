@@ -27,15 +27,15 @@ The steps followed to carry out this project are as follows:
 
 [Step 1: Gather all the audio recordings and build the dataset](#step-1-gather-all-the-audio-recordings-and-build-the-dataset)
 
-[Step 2: Reading of recordings, extraction of MFCCs and pre-processing.    ](#Step-2:)
+[Step 2: Reading of recordings, extraction of MFCCs and pre-processing.    ](#Step-2)
 
-[Step 3: Train the GMM models for each speaker](#Step-3:-Construction-of-GMM-models)
+[Step 3: Train the GMM models for each speaker](#Step-3-Construction-of-GMM-models)
 
-[Step 4: Divide the Test data set into 3s,10s,15s and 30s segments](#Step-4:-Divide-the-Test-data-set-into-3s,-10s,-15s-and-30s-segments)
+[Step 4: Divide the Test data set into 3s,10s,15s and 30s segments](#Step-4-Divide-the-Test-data-set-into-3s,-10s,-15s-and-30s-segments)
 
-[Step 5: Identification](#Step-5:-Identification)
+[Step 5: Identification](#Step-5-Identification)
 
-[Step 6: Verification](#Step-6:-Verification)
+[Step 6: Verification](#Step-6-Verification)
 
 The schema below demonstrates how the project is stored in our computers :
 
@@ -49,7 +49,7 @@ In the rest of this report, we will detail each step of the approach followed.
 
 Our dataset is formed by a set of audio recordings made by each student in our class. Indeed each of us was responsible for recording two audios of 1 min one for the train and one for the test and depositing them in a shared drive as well as mentioning our names in the dedicated Excel file to assign each student his/her identifier. We have two folders Train and Test each contains sub-folders (F) and (H) in which the records are stored.
 
-### Step 2:
+### Step 2
 • Reading of recordings:
 
 In order to read the audio recordings we have defined the following function which allows to read the audios from a given path (filepath) using the Scipy library and returns three lists: audios, freqs, filepaths.
@@ -112,7 +112,7 @@ Extracted MFCCs are saved in genre-based files. The function first extracts gend
  
  ![Screenshot_872](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/f88cf57d-2d3e-4cfe-9653-8359e11220b9)
 
-### Step 3: Construction of GMM models
+### Step 3 Construction of GMM models
 
 In this step we have defined a function that takes two parameters as input: parentDir (the parent directory path) and n_components (the number of components for the GMM). This function allows you to read a file containing the MFFcs of an audio, initialize a GMM model, train it on the MFFCs, then save it in a pickle file.
 Each student has four Gmm models: one model with 128 Gaussians, a second with 256, a third with 512 and a last with 1024.
@@ -146,7 +146,7 @@ The names of the files containing the trained GMM models are in the form: Identi
                 pickle.dump(gmm, f)
 
  ```
-### Step 4: Divide the Test data set into 3s, 10s, 15s and 30s segments
+### Step 4 Divide the Test data set into 3s, 10s, 15s and 30s segments
 
 Then we split the test mfcc files into 3s, 10s, 15s and 30s files that we created. We assume that each second equals 100 frames. This division is made to illustrate the influence of segment duration on the ability of the model to recognize the speaker.
  ```javascript
