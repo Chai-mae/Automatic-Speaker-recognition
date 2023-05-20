@@ -25,7 +25,7 @@ The majority of the solutions developed for speaker recognition aim either to id
 As part of this project, we aim to build a speaker recognition system especially for students in our class. The objective being the identification of the student at first and the verification of the latter thereafter
 The steps followed to carry out this project are as follows:
 
-[Step 1: Gather all the audio recordings and build the dataset](#step-1:-gather-all-the-audio-recordings-and-build-the-dataset)
+[Step 1: Gather all the audio recordings and build the dataset](#step-1-gather-all-the-audio-recordings-and-build-the-dataset)
 
 [Step 2: Reading of recordings, extraction of MFCCs and pre-processing.    ](#Step-2:)
 
@@ -45,7 +45,7 @@ In the rest of this report, we will detail each step of the approach followed.
 
 **<h2>General structure of the project</h2>**
 
-**<h3>Step 1: Gather all the audio recordings and build the dataset</h3>** 
+**<h3>Step 1 Gather all the audio recordings and build the dataset</h3>** 
 
 Our dataset is formed by a set of audio recordings made by each student in our class. Indeed each of us was responsible for recording two audios of 1 min one for the train and one for the test and depositing them in a shared drive as well as mentioning our names in the dedicated Excel file to assign each student his/her identifier. We have two folders Train and Test each contains sub-folders (F) and (H) in which the records are stored.
 
