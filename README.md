@@ -357,6 +357,10 @@ The DET curve typically uses a logarithmic scale to represent the FRR on the x-a
 
 A low value for both FAR and FRR would be indicated by the DET curve being as close as feasible to the bottom-left corner of the plot. On the DET curve, the Equal Error Rate (EER) is a frequently utilized point. The operational point where the FAR and FRR are equal is what it represents. The EER offers a single metric that measures the effectiveness of the system and can be used to contrast various speaker verification systems or to establish a practical cutoff point for decision-making.
 
+**<h2>Conclusion</h2>**
+
+In summary, our automatic speaker recognition project has been successfully completed. We have developed a system capable of identifying and authenticating speakers based on their unique vocal characteristics. Key steps of the project included collecting audio recordings, extracting MFCC coefficients, training GMM models and evaluating performance. The results obtained showed acceptable false prediction rates and paved the way for future improvements and developments.
+
 
 
 
