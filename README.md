@@ -38,13 +38,14 @@ The steps followed to carry out this project are as follows:
 
 [Step 6: Verification](#Step-6-Verification)
 
-The schema below demonstrates how the project is stored in our computers :
-
-![Diagramme vierge (9)](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/b86cce81-f86e-4ce2-83ca-2cb6aff2958e)
     
 In the rest of this report, we will detail each step of the approach followed.
 
 **<h2>General structure of the project</h2>**
+
+The schema below demonstrates how the project is stored in our computers :
+
+![Diagramme vierge (9)](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/b86cce81-f86e-4ce2-83ca-2cb6aff2958e)
 
 **<h3>Step 1: Gather all the audio recordings and build the dataset</h3>** 
 
