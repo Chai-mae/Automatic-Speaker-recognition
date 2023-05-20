@@ -257,7 +257,7 @@ for result in results_3_F_128:
  
  ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/d64cf960-c482-4aad-9876-ac854c8852bf)
  
-After obtaining the scores, we sort them from the minimum score to the maximum then we generate a DET (Detection Error Tradeoff) curve and calculate the equalization error rate EER. We start by extracting the genuine partitions and the impostor partitions from a set of results. Then, we determine the minimum and maximum scores among all the scores to generate a certain number of thresholds using the linspace function. Then, for each threshold, we calculate the number of false rejections and false acceptances and then their rates. These rates are stored in lists and the FAR-FRR curve (DET) is plotted and the EER point is displayed with an annotation.
+After obtaining the scores, we sort them from the minimum score to the maximum then we generate a DET (Detection Error Tradeoff) curve and calculate the equal error rate EER. We start by extracting the genuine partitions and the impostor partitions from a set of results. Then, we determine the minimum and maximum scores among all the scores to generate a certain number of thresholds using the linspace function. Then, for each threshold, we calculate the number of false rejections and false acceptances and then their rates. These rates are stored in lists and the FAR-FRR curve (DET) is plotted and the EER point is displayed with an annotation.
 
 ```javascript
 # Initialize variables
