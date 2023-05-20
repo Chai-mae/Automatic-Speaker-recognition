@@ -22,7 +22,8 @@ The majority of the solutions developed for speaker recognition aim either to id
 
 **<h2>Project Description:</h2>**
 
-As part of this project, we aim to build a speaker recognition system especially for students in our class. The objective being the identification of the student at first and the verification of the latter thereafter
+As part of this project, we aim to build a speaker recognition system especially for students in our class. The objective being the identification of the student at first and the verification of the latter thereafter.
+
 The steps followed to carry out this project are as follows:
 
 [Step 1: Gather all the audio recordings and build the dataset](#step-1-gather-all-the-audio-recordings-and-build-the-dataset)
