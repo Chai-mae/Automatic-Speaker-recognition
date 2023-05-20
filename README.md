@@ -78,7 +78,7 @@ In order to read the audio recordings we have defined the following function whi
 
 After reading the audio recordings comes the step where we must extract the Mfcc coefficients and delete the frames that constitute the silence. To do this, we have defined the following function which takes as input the audios list, the freqs list, the filepaths list, and the path where you want to save the MFFCs.
 In order to remove the silence, we calculated the energy of the voice signal represented in MFCC form. It is calculated for each frame of the MFCCs using the numpy library. After calculating the energy, a threshold is calculated at 40% of the average energy. This threshold is used to distinguish frames of silence from frames of speech. Speech frames correspond to frames where the energy is above the threshold, while silence frames correspond to frames where the energy is below.
-Extracted MFCCs are saved in genre-based files. The function first extracts gender information from the file name by checking whether it contains the string "H" or "F". Then it saves the MFCCs in a directory named after the genre, and if the directory doesn't exist, it creates a new one. Finally, it saves the MFCCs to a text file with the same name as the original audio file, but with an ".mfcc" extension. MFCC functions are saved as comma-separated values in the text file.
+Extracted MFCCs are saved in gender-based files. The function first extracts gender information from the file name by checking whether it contains the string "H" or "F". Then it saves the MFCCs in a directory named after the gender, and if the directory doesn't exist, it creates a new one. Finally, it saves the MFCCs to a text file with the same name as the original audio file, but with an ".mfcc" extension. The MFCCs are saved as comma-separated values in the text file.
 
  ```javascript
  def extractMfccs_RemoveSilence_saveMfccs(audio, freq, filepath, directory):
@@ -116,6 +116,8 @@ Extracted MFCCs are saved in genre-based files. The function first extracts gend
 ### Step 3: Construction of GMM models
 
 In this step we have defined a function that takes two parameters as input: parentDir (the parent directory path) and n_components (the number of components for the GMM). This function allows you to read a file containing the MFFcs of an audio, initialize a GMM model, train it on the MFFCs, then save it in a pickle file.
+The function used for training the Gaussian Mixture Model (GMM) is fit() from the GaussianMixture class in the sklearn.mixture module.
+
 Each student has four Gmm models: one model with 128 Gaussians, a second with 256, a third with 512 and a last with 1024.
 The names of the files containing the trained GMM models are in the form: Identifier.n_component.gmm
  ```javascript
@@ -149,7 +151,7 @@ The names of the files containing the trained GMM models are in the form: Identi
  ```
 ### Step 4: Divide the Test data set into 3s, 10s, 15s and 30s segments
 
-Then we split the test mfcc files into 3s, 10s, 15s and 30s files that we created. We assume that each second equals 100 frames. This division is made to illustrate the influence of segment duration on the ability of the model to recognize the speaker.
+In this step we split the test mfcc files into 3s, 10s, 15s and 30s files that we created. We assume that each second equals 100 frames. This division is made to illustrate the influence of segment duration on the ability of the model to recognize the speaker.
  ```javascript
  def split_audio_test(test_mfccs, segment_length_sec):
 
@@ -170,7 +172,7 @@ Then we split the test mfcc files into 3s, 10s, 15s and 30s files that we create
  ```
 ### Step 5: Identification
 
-In this step, first we define the predict_speaker function which takes as input the mfcc as well as the GMM model to calculate the score of each in order to return the maximum score as well as the predict_speaker below the function:
+In this step, first we define the predict_speaker function which takes as input the Mfccs as well as the GMM model to calculate the log-likelihood score of the provided data samples (mfcc_features) under the GMM model. The log-likelihood score indicates how well the given data samples fit the learned probability distribution of the GMM. A higher score suggests a better fit, while a lower score indicates a poorer fit. The function returns the maximum score as well as the predict_speaker.
  ```javascript
 def predict_speaker(mfcc_features, gmm_models):
     highest_score = -float('inf')
@@ -186,10 +188,10 @@ def predict_speaker(mfcc_features, gmm_models):
 
     return highest_score, predicted_speaker
  ```
-Next, we load all the GMM models for men and women and store them in dictionaries based on n_components and gender:(key: model_name , value: gmm model)
-and also we load files containing mfcc features for male and female and store them in dictionaries according to duration and gender: (key: model_name , value: mfcc_features)
+Next, we load all the GMM models for men and women and store them in dictionaries based on n_components and gender: (key: model_name , value: gmm model)
+and also we load the files containing mfcc features for men and women and store them in dictionaries according to duration and gender: (key: model_name , value: mfcc_features)
 
-We go to the speaker identification stage, this part of code, we apply the predict_speaker function for each segment, and store the results in a list of dictionaries. Each dictionary contains information such as the name of the test speaker, the number of segments, the maximum score obtained and the predicted speaker.
+We go to the speaker identification stage, in the following part of code, we apply the predict_speaker function for each segment, and store the results in a list of dictionaries. Each dictionary contains information such as the name of the test speaker, the number of segments, the maximum score obtained and the predicted speaker.
  ```javascript
 results_3_H_128 = []
 
@@ -243,9 +245,9 @@ def get_scores(mfcc_features, gmm_models):
         scores[model_name.split(".")[0]] = gmm_model.score(mfcc_features)
     return scores
  ``` 
-Then we go to load all the GMM models for men and women and store them in dictionaries as in the identification step, and we load also the files containing the Mfcc features for male and female and store them in dictionaries according to duration and gender ( key: model_name , value: mfcc_features ).
+Then we load all the GMM models for men and women and store them in dictionaries as in the identification step, we also load the files containing the Mfcc features for male and female and store them in dictionaries according to duration and gender ( key: model_name , value: mfcc_features ).
 
-After we go to the step of obtaining the predictions of the segments of the test, we start with the men, we use the get_scores function to calculate the score of each segment with each GMM model and store them in a filename with score
+After that comes the step of obtaining the predictions of the segments of the test, we start with the men, we use the get_scores function to calculate the score of each segment with each GMM model and store them in a filename with score
 ```javascript
 results_3_F_128 = []
 
@@ -263,7 +265,7 @@ for result in results_3_F_128:
  
  ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/d64cf960-c482-4aad-9876-ac854c8852bf)
  
-After obtaining the scores, we sort them from the minimum score to the maximum then we generate a DET (Detection Error Tradeoff) curve and calculate the equal error rate EER. We start by extracting the genuine partitions and the impostor partitions from a set of results. Then, we determine the minimum and maximum scores among all the scores to generate a certain number of thresholds using the linspace function. Then, for each threshold, we calculate the number of false rejections and false acceptances and then their rates. These rates are stored in lists and the FAR-FRR curve (DET) is plotted and the EER point is displayed with an annotation.
+After obtaining the scores, we sort them from the minimum score to the maximum then we generate a DET (Detection Error Tradeoff) curve and calculate the equal error rate EER. We start by extracting the genuine partitions and the impostor partitions from a set of results. Then, we determine the minimum and maximum scores among all the scores to generate a certain number of thresholds using the linspace function. Then, for each threshold, we calculate the number of false rejections and false acceptances and then their rates. These rates are stored in lists and the FAR-FRR curve (DET) is plotted along with the EER point.
 
 ```javascript
 # Initialize variables
@@ -334,7 +336,7 @@ plt.show()
 ```
 **<h2>Obtained Results</h2>**
 
-• In the identification we have obtained plotted different curves in order to interpret the results better. Here are the plots obtained :
+• In the identification we have plotted different curves in order to interpret the results better. Here are the plots obtained :
 
 ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/5e31e04e-516e-4d1d-b423-abdc288228b2)
 
@@ -344,7 +346,7 @@ plt.show()
 
 ![image](https://github.com/Chai-mae/Automatic-Speaker-recognition/assets/86806466/f42ad589-8c4e-4fc7-8294-2d2eb7c10c55)
 
-We can see from the plots that the best results are given by the GMM model with 512 components. And also we can say that the segments of 15 gives the best results and this because the segments of 15 s may contain much more information of the speaker's characteristics than the other segments. Anothen thing we can deduce from the plots is that the male tests are easier to be predicted than the female ones, in fact the majority of the false prediction rates are zero.  
+We can see from the plots that the best results are given by the GMM model with 512 components. And also we can say that the segments of 15 gives the best results and this occurs because the segments of 15s may contain much more information of the speaker's characteristics than the other segments. Another thing we can deduce from the plots is that the male tests are easier to be predicted than the female ones, in fact the majority of the false prediction rates of men are zero.  
     
 • As for the verification, we have obtained the following DET curves : 
 
@@ -362,6 +364,8 @@ In the case of speaker authentication, the performance of a speech verification 
 The DET curve typically uses a logarithmic scale to represent the FRR on the x-axis and the FAR on the y-axis. You can set an acceptable threshold that balances the false acceptance and false rejection rates based on the particular requirements and limits of the application by examining the DET curve and seeing the system's performance at various operating points.
 
 A low value for both FAR and FRR would be indicated by the DET curve being as close as feasible to the bottom-left corner of the plot. On the DET curve, the Equal Error Rate (EER) is a frequently utilized point. The operational point where the FAR and FRR are equal is what it represents. The EER offers a single metric that measures the effectiveness of the system and can be used to contrast various speaker verification systems or to establish a practical cutoff point for decision-making.
+
+In our case most of the DET curves are close to the bottom-left corner of the plot which indicates that our models have good performance. Also the EER rates are closer to zero which suggests a higher level of accuracy and discrimination of the model.
 
 **<h2>Conclusion</h2>**
 
