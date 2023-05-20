@@ -362,6 +362,14 @@ A low value for both FAR and FRR would be indicated by the DET curve being as cl
 In summary, our automatic speaker recognition project has been successfully completed. We have developed a system capable of identifying and authenticating speakers based on their unique vocal characteristics. Key steps of the project included collecting audio recordings, extracting MFCC coefficients, training GMM models and evaluating performance. The results obtained showed acceptable false prediction rates and paved the way for future improvements and developments.
 
 
+**<h2>Made by:</h2>**
+<h3>Ikram Belmadani</h3>
+<h3>Biyaye Chaimae</h3>
+
+
+**<h2>Supervised by:</h2>**
+<h3>Pr.Jamal KHARROUBI</h3>
+
 
 
 
